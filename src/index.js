@@ -17,7 +17,7 @@ export const WIDGET_NODE = -4
 export class Text {
   nodeType = TEXT_NODE
   data: string
-  constructor(data:string) {
+  constructor (data:string) {
     this.data = data
   }
   map <tagged> (f:(input:*) => tagged):Text {
@@ -31,7 +31,7 @@ export class PlainElement <message> {
   tagName:string
   settings:Settings<message>
   children:Array<Node<message>>
-  constructor(namespaceURI:?string, tagName:string, settings:Settings<message>, children:Array<Node<message>>) {
+  constructor (namespaceURI:?string, tagName:string, settings:Settings<message>, children:Array<Node<message>>) {
     this.namenspaceURI = namespaceURI
     this.tagName = tagName
     this.settings = settings
@@ -46,7 +46,7 @@ export class TaggedElement <inner, outer> {
   nodeType = ELEMENT_NODE
   node:PlainElement<inner>
   tag:(message:inner) => outer
-  constructor(node:PlainElement<inner>, tag:(message:inner) => outer) {
+  constructor (node:PlainElement<inner>, tag:(message:inner) => outer) {
     this.node = node
     this.tag = tag
   }
@@ -55,14 +55,12 @@ export class TaggedElement <inner, outer> {
   }
 }
 
-
-
 export class PlainThunk <message> {
   nodeType = THUNK_NODE
   view:(...args:Array<*>) => string | Text | PlainElement<message> | TaggedElement <*, message> | PlainWidget<message>
   args:Array<*>
   node:? string | Text | PlainElement<message> | TaggedElement <*, message> | PlainWidget<message>
-  constructor(view:(...args:Array<*>) => string | Text | PlainElement<message> | TaggedElement <*, message> | PlainWidget<message>, args:Array<*>) {
+  constructor (view:(...args:Array<*>) => string | Text | PlainElement<message> | TaggedElement <*, message> | PlainWidget<message>, args:Array<*>) {
     this.view = view
     this.args = args
   }
@@ -75,9 +73,9 @@ export class TaggedThunk <inner, outer> {
   nodeType = THUNK_NODE
   node:PlainThunk<inner>
   tag:(message:inner) => outer
-  constructor(node:PlainThunk<inner>, tag:(message:inner) => outer) {
-   this.node = node
-   this.tag = tag
+  constructor (node:PlainThunk<inner>, tag:(message:inner) => outer) {
+    this.node = node
+    this.tag = tag
   }
   map <tagged> (f:(input:outer) => tagged):TaggedThunk<inner, tagged> {
     return new TaggedThunk(this.node, payload => f(this.tag(payload)))
@@ -89,13 +87,13 @@ export class PlainWidget <message> {
   map <tagged> (f:(input:message) => tagged):TaggedWidget<message, tagged> {
     return new TaggedWidget(this, f)
   }
-  init():HTMLElement {
+  init ():HTMLElement {
     throw new Error('Not implemented')
   }
-  update(previous:self, element:HTMLElement):?HTMLElement {
+  update (previous:self, element:HTMLElement):?HTMLElement {
     throw new Error('Not implemneted')
   }
-  destroy(element:HTMLElement):void {
+  destroy (element:HTMLElement):void {
   }
 }
 
@@ -103,23 +101,22 @@ export class TaggedWidget <inner, outer> {
   nodeType = WIDGET_NODE
   node: PlainWidget<inner>
   tag:(message:inner) => outer
-  constructor(node:PlainWidget<inner>, tag:(message:inner) => outer) {
-   this.node = node
-   this.tag = tag
+  constructor (node:PlainWidget<inner>, tag:(message:inner) => outer) {
+    this.node = node
+    this.tag = tag
   }
   map <tagged> (f:(input:outer) => tagged):TaggedWidget<inner, tagged> {
     return new TaggedWidget(this.node, payload => f(this.tag(payload)))
   }
-  init():HTMLElement {
+  init ():HTMLElement {
     throw new Error('Not implemented')
   }
-  update(previous:self, element:HTMLElement):?HTMLElement {
+  update (previous:self, element:HTMLElement):?HTMLElement {
     throw new Error('Not implemneted')
   }
-  destroy(element:HTMLElement):void {
+  destroy (element:HTMLElement):void {
   }
 }
-
 
 export class Property <kind> {
   nodeType = PROPERTY_NODE
@@ -174,7 +171,7 @@ export type Settings <message> = {
 
 export class Driver {
   target:HTMLElement
-  constructor({target}:{target:HTMLElement}) {
+  constructor ({target}:{target:HTMLElement}) {
     this.target = target
   }
   execute <message> (node:Node<message>, process:{send(payload:message):void}):void {

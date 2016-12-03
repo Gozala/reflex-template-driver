@@ -1,8 +1,9 @@
 /* @noflow */
 
-import * as API from "../"
-import test from "tape"
+import * as API from '../'
+import test from 'tape'
 
-test("test baisc", test => {
-  test.isEqual(typeof(API), "object")
+test('test baisc', test => {
+  test.isEqual(typeof (API), 'object')
+  test.end()
 })
